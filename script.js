@@ -30,15 +30,20 @@ newBook.addEventListener('click', () => {
 
 submitBook.addEventListener('click', (e) => {
     e.preventDefault();
+
+    if(form.elements['read'].checked == true){
+        readStatus = "read";
+    } else {
+        readStatus = "not read"
+    }
     addBookToLibrary(new Book(
         form.elements['title'].value,
         form.elements['author'].value,
         form.elements['pages'].value,
-        form.elements['read'].value,
+        readStatus,
     ));
-    console.log(form.elements['title'].value)
-
     displayBooks(myLibrary);
+
 })
 
 

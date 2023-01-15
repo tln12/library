@@ -9,7 +9,7 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <button id="new-book">NEW BOOK</button>
+    <button id="new-book">&plus;</button>
     <div class="wrapper">
         <form action="" method="">
             <span>Add a new book</span>
@@ -25,10 +25,16 @@
                 <span>Number of Pages</span>
                 <input type="number" id="pages" name="pages"required>
             </label>
-            <label for="read">
-                <span>Have you read it yet?</span>
-                <input type="checkbox" id="read" name="read" value="not read yet">
-            </label>
+
+            <fieldset>
+                <legend>Have you read it yet?</legend>
+                <label for="read-status">
+                    <span>Yes</span>
+                    <input type="radio" id="read" name="read-status">
+                    <span>No</span>
+                    <input type="radio" id="not-read" name="read-status" checked>
+                </label>
+            </fieldset>
             <button id="submit-book">Submit Book</button>
         </form>
     </div>
