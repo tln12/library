@@ -4,13 +4,14 @@ const submitBook = document.querySelector('#submit-book')
 const formWrapper = document.querySelector('.wrapper')
 const form = document.querySelector('form')
 const bod = document.querySelector('body')
+const dashboard = document.querySelector('#dashboard')
+const cardTemplate = document.querySelector('.card')
 
-
-function Book(title, author, pages, read) {
+function Book(title, author, pages, readStatus) {
     this.author = author;
     this.title = title;
     this.pages = pages;
-    this.read = read;
+    this.readStatus = readStatus;
 }
 Book.prototype.info = function() {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`
@@ -21,7 +22,43 @@ function addBookToLibrary(book) {
 }
 
 function displayBooks(array) {
-    array.forEach(book => console.table(book));
+    array.forEach(book => console.table(book))
+}
+
+function createCard(book) {
+
+    const card = document.createElement('div');
+    const subDiv = document.createElement('div');
+    const title = document.createElement('h3');
+    const author = document.createElement('span');
+    const pages = document.createElement('span');
+    const status = document.createElement('span');
+
+    card.classList.add('card');
+    title.classList.add('card-title');
+    author.classList.add('card-author');
+    pages.classList.add('card-pages');
+    status.classList.add('card-status');
+
+    title.textContent = book.title;
+    author.textContent = book.author;
+    pages.textContent = book.pages;
+    status.textContent = getReadStatus();
+
+    subDiv.appendChild(pages);
+    subDiv.appendChild(status);
+    card.appendChild(title);
+    card.appendChild(author);
+    card.appendChild(subDiv);
+    dashboard.appendChild(card);
+}
+
+function getReadStatus() {
+    if (form.elements['read'].checked == true) {
+        return 'read';
+    } else {
+        return 'not read';
+    }
 }
 
 newBook.addEventListener('click', () => {
@@ -31,18 +68,16 @@ newBook.addEventListener('click', () => {
 submitBook.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if(form.elements['read'].checked == true){
-        readStatus = "read";
-    } else {
-        readStatus = "not read"
-    }
-    addBookToLibrary(new Book(
+    const book = new Book(
         form.elements['title'].value,
         form.elements['author'].value,
         form.elements['pages'].value,
-        readStatus,
-    ));
-    displayBooks(myLibrary);
+        getReadStatus()
+    )
+    addBookToLibrary(book);
+    // displayBooks(myLibrary);
+    createCard(book);
+    form.reset();
 
 })
 
