@@ -1,6 +1,21 @@
-body {
-
+:root{
+    --padding-cards: 30px;
+    --card-shadow: 5px 5px 10px #c4c4c4;
 }
+
+#dashboard{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    padding: var(--padding-cards);
+    box-shadow: var(--card-shadow);
+}
+
 #new-book{
     position: fixed;
     font-size: 30px;
@@ -9,7 +24,7 @@ body {
     border-radius: 15px;
     border: none;
     background-color: #b82b47;
-    box-shadow: 5px 5px 10px #c4c4c4;
+    box-shadow: var(--card-shadow);
     color: white;
     font-weight: bold;
     bottom: 60px;
@@ -25,6 +40,7 @@ body {
     position: fixed;
     right: 60px;
     bottom: 150px;
+    background-color: white;
 }
 
 form {
@@ -32,7 +48,7 @@ form {
     flex-direction: column;
     width: 300px;
     box-shadow: 5px 5px 10px #636363;
-    padding: 30px;
+    padding: var(--padding-cards);
     border-radius: 5px;
 }
 form > span {
