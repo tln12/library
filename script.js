@@ -4,7 +4,6 @@ const submitBook = document.querySelector('#submit-book')
 const formWrapper = document.querySelector('.wrapper')
 const form = document.querySelector('form')
 const bod = document.querySelector('body')
-const dashboard = document.querySelector('#dashboard')
 const cardTemplate = document.querySelector('.card')
 
 function Book(title, author, pages, readStatus) {
@@ -26,30 +25,39 @@ function displayBooks(array) {
 }
 
 function createCard(book) {
-
+    const dashboard = document.querySelector('#dashboard')
+    
+    // Create DOM Elements
     const card = document.createElement('div');
-    const subDiv = document.createElement('div');
+    const infoDiv = document.createElement('div');
+    const wrapper = document.createElement('div');
     const title = document.createElement('h3');
     const author = document.createElement('span');
     const pages = document.createElement('span');
     const status = document.createElement('span');
+    const deleteSymbol = document.createElement('span');
 
     card.classList.add('card');
     title.classList.add('card-title');
     author.classList.add('card-author');
     pages.classList.add('card-pages');
     status.classList.add('card-status');
-
+    deleteSymbol.classList.add('material-symbols-outlined', "deleteSymbol");
+    
     title.textContent = book.title;
-    author.textContent = book.author;
-    pages.textContent = book.pages;
+    author.textContent = `by ${book.author}`;
+    pages.textContent = `${book.pages} pages \u2022 `;
     status.textContent = getReadStatus();
+    deleteSymbol.textContent = 'delete';
+    
+    infoDiv.appendChild(pages);
+    infoDiv.appendChild(status);
+    wrapper.appendChild(title);
+    wrapper.appendChild(author);
+    wrapper.appendChild(infoDiv);
 
-    subDiv.appendChild(pages);
-    subDiv.appendChild(status);
-    card.appendChild(title);
-    card.appendChild(author);
-    card.appendChild(subDiv);
+    card.appendChild(wrapper);
+    card.appendChild(deleteSymbol);
     dashboard.appendChild(card);
 }
 
@@ -62,7 +70,11 @@ function getReadStatus() {
 }
 
 newBook.addEventListener('click', () => {
-    formWrapper.style.display = "block";
+    if (formWrapper.style.display == "none" || formWrapper.style.display == "") {
+        formWrapper.style.display = "block";
+    } else if (formWrapper.style.display == "block") {
+        formWrapper.style.display = "none";
+    }
 })
 
 submitBook.addEventListener('click', (e) => {
@@ -75,20 +87,6 @@ submitBook.addEventListener('click', (e) => {
         getReadStatus()
     )
     addBookToLibrary(book);
-    // displayBooks(myLibrary);
     createCard(book);
     form.reset();
-
 })
-
-
-const book1 = new Book("Harry Potter", "J.K. Rowling", "399", "not read")
-// const book2 = new Book("Give and Take", "Adam Grant", "250", "read")
-// const book3 = new Book("Deep Work", "Cal Newport", "200", "not read")
-
-addBookToLibrary(book1);
-// addBookToLibrary(book2);
-// addBookToLibrary(book3);
-
-
-
