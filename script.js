@@ -1,10 +1,9 @@
 let myLibrary = [];
-const newBook = document.querySelector('#new-book')
-const submitBook = document.querySelector('#submit-book')
-const formWrapper = document.querySelector('.wrapper')
-const form = document.querySelector('form')
-const bod = document.querySelector('body')
-const cardTemplate = document.querySelector('.card');
+let cardList = [];
+const newBook = document.querySelector('#new-book');
+const submitBook = document.querySelector('#submit-book');
+const form = document.querySelector('form');
+const bod = document.querySelector('body');
 
 function Book(title, author, pages, readStatus) {
     this.author = author;
@@ -81,12 +80,22 @@ function createCard(book) {
     // Assign each card number of corresponding index in myLibrary
     card.setAttribute('data-index', myLibrary.indexOf(book));
 
+    cardList.push(card);
     dashboard.appendChild(card);
 }
 
 function removeCard(card) {
     const dashboard = document.querySelector('#dashboard');
     dashboard.removeChild(card);
+    // Remove card from cardList
+    cardList.splice(card.getAttribute('data-index'), 1);
+}
+
+// Reassign Indices when books gets removed
+function assignIndicesToCards() {
+    for (let i = 0; i < cardList.length; i++) {
+        cardList[i].setAttribute('data-index', i);
+    }
 }
 
 function getReadStatus() {
@@ -98,6 +107,7 @@ function getReadStatus() {
 }
 
 newBook.addEventListener('click', () => {
+    const formWrapper = document.querySelector('.wrapper')
     if (formWrapper.style.display == "none" || formWrapper.style.display == "") {
         formWrapper.style.display = "block";
     } else if (formWrapper.style.display == "block") {
@@ -117,7 +127,6 @@ submitBook.addEventListener('click', (e) => {
     addBookToLibrary(book);
     createCard(book);
     
-    console.log(myLibrary);
     form.reset();
 });
 
@@ -127,5 +136,7 @@ document.addEventListener('click', (e) => {
     const index = card.getAttribute('data-index');
 
     removeCard(card);
-    removeBookFromLibrary(index);    
+    assignIndicesToCards();
+    removeBookFromLibrary(index);
+    console.log(myLibrary);
 });
