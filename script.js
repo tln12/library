@@ -35,19 +35,29 @@ function createCard(book) {
     const card = document.createElement('div');
     const infoDiv = document.createElement('div');
     const wrapper = document.createElement('div');
+    const toolbar = document.createElement('div');
     const title = document.createElement('h3');
     const author = document.createElement('span');
     const pages = document.createElement('span');
     const status = document.createElement('span');
     const deleteSymbol = document.createElement('span');
+    const toggleLabel = document.createElement('label');
+    const toggleInput = document.createElement('input');
+    const toggleSpan = document.createElement('span');
 
-    // Add classes
+
+    // Add classes, IDs, attributes
     card.classList.add('card');
     title.classList.add('card-title');
     author.classList.add('card-author');
     pages.classList.add('card-pages');
     status.classList.add('card-status');
     deleteSymbol.classList.add('material-symbols-outlined', "delete-symbol");
+    toggleLabel.classList.add('switch');
+    toggleSpan.classList.add('slider');
+    toggleInput.classList.add('toggle-input');
+    toggleInput.setAttribute('type', 'checkbox');
+    toolbar.classList.add('card-tools');
     
     // Set content
     title.textContent = book.title;
@@ -61,9 +71,14 @@ function createCard(book) {
     wrapper.appendChild(title);
     wrapper.appendChild(author);
     wrapper.appendChild(infoDiv);
+    toggleLabel.appendChild(toggleInput);
+    toggleLabel.appendChild(toggleSpan);
+    toolbar.appendChild(deleteSymbol);
+    toolbar.appendChild(toggleLabel);
     card.appendChild(wrapper);
-    card.appendChild(deleteSymbol);
+    card.appendChild(toolbar);
 
+    // Assign each card number of corresponding index in myLibrary
     card.setAttribute('data-index', myLibrary.indexOf(book));
 
     dashboard.appendChild(card);
@@ -92,7 +107,7 @@ newBook.addEventListener('click', () => {
 
 submitBook.addEventListener('click', (e) => {
     e.preventDefault();
-
+    
     const book = new Book(
         form.elements['title'].value,
         form.elements['author'].value,
@@ -108,9 +123,9 @@ submitBook.addEventListener('click', (e) => {
 
 // Clicking delete symbol
 document.addEventListener('click', (e) => {
-    const card = e.target.closest('.delete-symbol').parentElement;
+    const card = e.target.closest('.delete-symbol').parentElement.parentElement;
     const index = card.getAttribute('data-index');
 
     removeCard(card);
-    removeBookFromLibrary(index);
+    removeBookFromLibrary(index);    
 });
