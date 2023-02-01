@@ -4,7 +4,7 @@ const submitBook = document.querySelector('#submit-book')
 const formWrapper = document.querySelector('.wrapper')
 const form = document.querySelector('form')
 const bod = document.querySelector('body')
-const cardTemplate = document.querySelector('.card')
+const cardTemplate = document.querySelector('.card');
 
 function Book(title, author, pages, readStatus) {
     this.author = author;
@@ -20,8 +20,12 @@ function addBookToLibrary(book) {
     myLibrary.push(book);
 }
 
+function removeBookFromLibrary(index) {
+    myLibrary.splice(index, 1);
+}
+
 function displayBooks(array) {
-    array.forEach(book => console.table(book))
+    array.forEach(book => console.table(book));
 }
 
 function createCard(book) {
@@ -37,13 +41,15 @@ function createCard(book) {
     const status = document.createElement('span');
     const deleteSymbol = document.createElement('span');
 
+    // Add classes
     card.classList.add('card');
     title.classList.add('card-title');
     author.classList.add('card-author');
     pages.classList.add('card-pages');
     status.classList.add('card-status');
-    deleteSymbol.classList.add('material-symbols-outlined', "deleteSymbol");
+    deleteSymbol.classList.add('material-symbols-outlined', "delete-symbol");
     
+    // Set content
     title.textContent = book.title;
     author.textContent = `by ${book.author}`;
     pages.textContent = `${book.pages} pages \u2022 `;
@@ -55,10 +61,17 @@ function createCard(book) {
     wrapper.appendChild(title);
     wrapper.appendChild(author);
     wrapper.appendChild(infoDiv);
-
     card.appendChild(wrapper);
     card.appendChild(deleteSymbol);
+
+    card.setAttribute('data-index', myLibrary.indexOf(book));
+
     dashboard.appendChild(card);
+}
+
+function removeCard(card) {
+    const dashboard = document.querySelector('#dashboard');
+    dashboard.removeChild(card);
 }
 
 function getReadStatus() {
@@ -75,7 +88,7 @@ newBook.addEventListener('click', () => {
     } else if (formWrapper.style.display == "block") {
         formWrapper.style.display = "none";
     }
-})
+});
 
 submitBook.addEventListener('click', (e) => {
     e.preventDefault();
@@ -88,5 +101,16 @@ submitBook.addEventListener('click', (e) => {
     )
     addBookToLibrary(book);
     createCard(book);
+    
+    console.log(myLibrary);
     form.reset();
-})
+});
+
+// Clicking delete symbol
+document.addEventListener('click', (e) => {
+    const card = e.target.closest('.delete-symbol').parentElement;
+    const index = card.getAttribute('data-index');
+
+    removeCard(card);
+    removeBookFromLibrary(index);
+});
