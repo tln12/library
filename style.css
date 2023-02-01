@@ -42,6 +42,8 @@ header {
 }
 .card-title{
     min-height: 40px;
+    margin: 0;
+    margin-bottom: 40px;
 }
 
 .card-author {
