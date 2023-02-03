@@ -3,6 +3,7 @@ let cardList = [];
 const newBook = document.querySelector('#new-book');
 const submitBook = document.querySelector('#submit-book');
 const form = document.querySelector('form');
+const title = document.getElementById('title');
 const bod = document.querySelector('body');
 
 function Book(title, author, pages, readStatus) {
@@ -116,18 +117,22 @@ newBook.addEventListener('click', () => {
 });
 
 submitBook.addEventListener('click', (e) => {
-    e.preventDefault();
-    
-    const book = new Book(
-        form.elements['title'].value,
-        form.elements['author'].value,
-        form.elements['pages'].value,
-        getReadStatus()
-    )
-    addBookToLibrary(book);
-    createCard(book);
-    
-    form.reset();
+    console.log(form.checkValidity());
+
+    if(form.checkValidity()) {
+        e.preventDefault();
+        
+        const book = new Book(
+            form.elements['title'].value,
+            form.elements['author'].value,
+            form.elements['pages'].value,
+            getReadStatus()
+        )
+        addBookToLibrary(book);
+        createCard(book);
+        
+        form.reset();
+    }
 });
 
 // Clicking delete symbol
